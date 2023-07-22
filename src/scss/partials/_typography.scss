@@ -1,0 +1,40 @@
+@use 'colors';
+
+$heading-md: 32px;
+$heading-sm: 24px;
+$heading-xs: 16px;
+$body-md: 16px;
+$body-sm: 12px;
+
+
+ 
+
+@mixin small-header {
+    font-size: $heading-sm;
+    font-weight: 600;
+    color: colors.$dark-grey;
+}
+
+@mixin medium-body {
+    font-size: $body-md;
+    font-weight: normal;
+    color: colors.$grey;
+}
+
+@mixin small-body {
+    font-size: $body-sm;
+    font-weight: normal;
+    color: colors.$grey;
+}
+
+@mixin small-body-dark {
+    font-size: $body-sm;
+    font-weight: normal;
+    color: colors.$dark-grey;
+}
+
+@mixin medium-heading {
+    font-size: $heading-md;
+    font-weight: bold;
+    color: colors.$dark-grey
+}

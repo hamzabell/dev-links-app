@@ -1,0 +1,15 @@
+@mixin typography($type, $weight: normal) {
+    font-weight: $weight;
+
+    @if $type == body-sm {
+        font-size: 12px;
+    } @else if $type == body-md {
+        font-size: 16px;
+    } @else if $type == heading-xs {
+        font-size: 16px;
+    } @else if $type == heading-sm {
+        font-size: 24px;
+    } @else {
+        font-size: 32px;
+    }
+ };
