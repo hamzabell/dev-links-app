@@ -13,10 +13,14 @@
             <div class="profile__pic-upload">
                 <h5 class="profile__pic-upload-title">Profile Picture</h5>
 
-                <ImageUpload class="profile__pic-upload-display" @click="openFileExplorer"  v-model="imageUrl"/>
-                <input type="file"  id="upload-image" style="display: none;" accept="image/*" @change="onChangeImage">
 
-                <h6 class="profile__pic-upload-sub-title">Image must be below 1024x1024px. Use PNG or JPG format.</h6>
+                <div class="profile__pic-upload-action-wrapper">
+                    <ImageUpload class="profile__pic-upload-display" @click="openFileExplorer"  v-model="imageUrl"/>
+                    <input type="file"  id="upload-image" style="display: none;" accept="image/*" @change="onChangeImage">
+    
+                    <h6 class="profile__pic-upload-sub-title">Image must be below 1024x1024px. Use PNG or JPG format.</h6>
+                </div>
+
             </div>
 
             <div class="profile__form-wrapper">
@@ -233,6 +237,64 @@
     &__save {
         width: 31.1rem;
         height: 4.6rem;
+    }
+
+
+    @media screen and (min-width: partials.$tablet) {
+        &__save {
+            &-wrapper {
+                justify-content: flex-end;
+            }
+            width: 9.1rem;
+        }
+
+        &__customizer {
+            padding: 4rem;
+        }
+
+        &__pic-upload {
+            display: flex;
+            justify-content: space-between;
+            min-height: 23.3rem;
+            padding: 2rem;
+
+            &-title {
+                margin-top: 8.4rem;
+            }
+
+            &-action-wrapper {
+                display: flex;
+                column-gap: 2.4rem;
+            }
+
+            &-sub-title {
+                width: 21.7rem;
+                margin-top: 8.4rem;
+            }
+        }
+
+        &__form {
+
+            &-group {
+                flex-direction: row;
+                row-gap: 0;
+                justify-content: space-between;
+            }
+
+            &-input {
+                width: 34.4rem;
+            }
+
+            &-label {
+                margin-top: 1.2rem;
+            }
+
+            &-wrapper {
+                height: 20.8rem;
+            }
+
+        }
+        
     }
 }
 </style>

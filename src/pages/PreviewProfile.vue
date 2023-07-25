@@ -5,23 +5,21 @@
             <AppButton class="preview__button">Share Link</AppButton>
         </div>
 
-        <div class="preview__user-details">
-            <div class="preview__user-image">
-                <img :src="userImage" alt="User Profile Photo">
+        <div class="preview__user-links-wrapper">
+            <div class="preview__user-details">
+                <div class="preview__user-image">
+                    <img :src="userImage" alt="User Profile Photo">
+                </div>
+                <div class="preview__user-info">
+                    <h1 class="preview__user-name">{{  auth.user.firstName || "[FirstName]" }}</h1>
+    
+                    <p class="preview__user-email">{{ auth.user.email || "" }}</p>
+                </div>
             </div>
-            <div class="preview__user-info">
-                <h1 class="preview__user-name">{{  auth.user.firstName || "[FirstName]" }}</h1>
-
-                <p class="preview__user-email">{{ auth.user.email || "" }}</p>
+    
+            <div class="preview__user-links">
+                 <PreviewButton v-for="link in newLinks" :key="link.id" :button-type="link.platform" :link="link.link"/>
             </div>
-        </div>
-
-        <div class="preview__user-links">
- 
-
-             <PreviewButton v-for="link in newLinks" :key="link.id" :button-type="link.platform" :link="link.link"/>
-             
-
         </div>
 
     </div>
@@ -120,6 +118,57 @@
         }
 
       
+        }
+
+
+        @media screen and (min-width: partials.$tablet) {
+            background: partials.$grey-light;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            z-index: 1;
+            position: relative;
+
+            &-links {
+                overflow-y: hidden ;
+            }
+
+            &__action-wrapper {
+                align-self: center;
+                display: flex;
+                justify-content: space-between;
+                background: partials.$white;
+                width: 72rem;
+                margin-top: 2.4rem;
+                border-radius: 12px;
+
+                &:after {
+                    content: '';
+                    display: flex;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 35.7rem;
+                    background: partials.$purple;
+                    z-index: -1;
+                    border-bottom-left-radius: 32px;
+                    border-bottom-right-radius: 32px;
+                }
+            }
+            &__user-links-wrapper {
+                background: partials.$white;
+                width: 34.5rem;
+                align-self: center;
+                border-radius: 24px;
+                margin-top: 10.2rem;
+                height: 56.9rem;
+                overflow-y: scroll ;
+            }
+
+
+            
         }
     }
 </style>

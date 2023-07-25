@@ -317,6 +317,21 @@
                 padding-right: .8rem;
             }
         }
+
+
+        @media screen and (min-width: partials.$tablet) {
+            &__customizer { 
+                padding: 4rem;
+            }
+
+            &__save-wrapper {
+                justify-content: flex-end;
+            }
+
+            &__save {
+                width: 9.1rem;
+            }
+        }
         
     }
 </style>
