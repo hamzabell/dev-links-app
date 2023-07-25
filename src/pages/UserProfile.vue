@@ -2,57 +2,69 @@
     <div class="profile">
         <AppNavBar  class="profile__navbar"/>
 
-        <div class="profile__customizer">
-            <div class="profile__header">
-                <h1 class="profile__title">Profile Details</h1>
-                <p class="profile__subtitle">
-                    Add your details to create a personal touch to your profile.
-                </p>
+
+        <div class="profile__desktop-wrapper">
+            <div class="profile__desktop-previewer">
+                <DesktopPreviewer :links-list="linksForPreview" />
             </div>
-
-            <div class="profile__pic-upload">
-                <h5 class="profile__pic-upload-title">Profile Picture</h5>
-
-
-                <div class="profile__pic-upload-action-wrapper">
-                    <ImageUpload class="profile__pic-upload-display" @click="openFileExplorer"  v-model="imageUrl"/>
-                    <input type="file"  id="upload-image" style="display: none;" accept="image/*" @change="onChangeImage">
+     
+            <div class="profile__customizer">
+                <div class="profile__header">
+                    <h1 class="profile__title">Profile Details</h1>
+                    <p class="profile__subtitle">
+                        Add your details to create a personal touch to your profile.
+                    </p>
+                </div>
     
-                    <h6 class="profile__pic-upload-sub-title">Image must be below 1024x1024px. Use PNG or JPG format.</h6>
+                <div class="profile__pic-upload">
+                    <h5 class="profile__pic-upload-title">Profile Picture</h5>
+    
+    
+                    <div class="profile__pic-upload-action-wrapper">
+                        <ImageUpload class="profile__pic-upload-display" @click="openFileExplorer"  v-model="imageUrl"/>
+                        <input type="file"  id="upload-image" style="display: none;" accept="image/*" @change="onChangeImage">
+        
+                        <h6 class="profile__pic-upload-sub-title">Image must be below 1024x1024px. Use PNG or JPG format.</h6>
+                    </div>
+    
                 </div>
-
+    
+                <div class="profile__form-wrapper">
+                    <div class="profile__form-group">
+                        <label class="profile__form-label" >First Name*</label>
+                        <input type="text" class="profile__form-input" v-bind="firstName"  placeholder="Ben" />
+                    </div>
+    
+                    <div class="profile__form-group">
+                        <label class="profile__form-label">Last Name*</label>
+                        <input type="text" class="profile__form-input"  v-bind="lastName" placeholder="Stiller" />
+                    </div>
+    
+                    <div class="profile__form-group">
+                        <label class="profile__form-label">Email</label>
+                        <input type="text" class="profile__form-input"  v-bind="email" placeholder="e.g alex@email.com" :disabled="true"  />
+                    </div>
+    
+                </div>
+                <div class="profile__save-wrapper">
+                    <AppButton class="profile__save"  @click="onSubmit">Save</AppButton>
+                </div>
+    
             </div>
-
-            <div class="profile__form-wrapper">
-                <div class="profile__form-group">
-                    <label class="profile__form-label" >First Name*</label>
-                    <input type="text" class="profile__form-input" v-bind="firstName"  placeholder="Ben" />
-                </div>
-
-                <div class="profile__form-group">
-                    <label class="profile__form-label">Last Name*</label>
-                    <input type="text" class="profile__form-input"  v-bind="lastName" placeholder="Stiller" />
-                </div>
-
-                <div class="profile__form-group">
-                    <label class="profile__form-label">Email</label>
-                    <input type="text" class="profile__form-input"  v-bind="email" placeholder="e.g alex@email.com" :disabled="true"  />
-                </div>
-
-            </div>
-            <div class="profile__save-wrapper">
-                <AppButton class="profile__save"  @click="onSubmit">Save</AppButton>
-            </div>
-
         </div>
+
     </div>
 </template>
 <script setup>
     import AppNavBar from '@/components/AppNavBar.vue';
     import AppButton from '@/components/AppButton.vue';
     import ImageUpload from '@/components/ImageUpload.vue';
+    import DesktopPreviewer from '@/components/DesktopPreviewer.vue';
+
 
     import useAuthStore from '@/store/useAuthStore';
+    import useLinkStore from '@/store/useLinkStore';
+
     import { onMounted, ref } from 'vue';
     import * as yup from 'yup';
     import { toTypedSchema } from '@vee-validate/yup';
@@ -65,6 +77,9 @@
     }));
 
     const imageUrl = ref();
+    const links = useLinkStore();
+
+    const linksForPreview = ref([null, null, null, null, null])
 
     const { defineInputBinds, resetForm, handleSubmit } = useForm({ validationSchema });
 
@@ -94,6 +109,13 @@
             lastName: auth.user.lastName ?? null,
             email: auth.user.email ?? null
         }});
+
+
+        links.links.forEach((link, idx) => {
+            if (idx < 5) {
+                linksForPreview.value[idx]= link
+            }
+        })
     })
 
 
@@ -131,7 +153,7 @@
         background: white;
         border-radius: 8px;
         padding: 1.6rem 0;
-        margin-top: 9rem;
+        
         display: flex;
         justify-content: center;
     }
@@ -173,6 +195,10 @@
         padding-left: .8rem;
         padding-right: .8rem;
         color: partials.$dark-grey;
+
+        &:disabled {
+            background: partials.$grey-light;
+        }
     }
 
 
@@ -181,7 +207,6 @@
     }
 
     &__pic-upload {
-        width: inherit;
         height: 33.3rem;
         background: partials.$grey-light;
         border-radius: 12px;
@@ -207,7 +232,6 @@
 
     }
     &__form-wrapper {
-        width: inherit;
         height: 27.4rem;
         background: partials.$grey-light;
         border-radius: 12px;
@@ -237,6 +261,14 @@
     &__save {
         width: 31.1rem;
         height: 4.6rem;
+    }
+
+    &__desktop-wrapper {
+        margin-top: 9rem;
+    }
+
+    &__desktop-previewer {
+            display: none;
     }
 
 
@@ -295,6 +327,34 @@
 
         }
         
+    }
+
+
+    @media screen and (min-width: partials.$desktop) {
+
+        &__customizer {
+            width: 80.8rem;
+            margin: 0;
+        }
+        &__desktop {
+            &-wrapper {
+                display: flex;
+                column-gap: 2.4rem;
+                justify-content: center;
+                padding: 2.4rem;
+            }
+
+            &-previewer {
+               display: flex;
+               justify-content: center;
+               align-items: center;
+               background: partials.$white;
+               width: 56rem;
+               height: 83.4rem;
+               border-radius: 12px;
+               padding: 4rem;
+            }
+        }
     }
 }
 </style>

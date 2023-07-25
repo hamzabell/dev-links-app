@@ -38,3 +38,15 @@ $body-sm: 12px;
     font-weight: bold;
     color: colors.$dark-grey
 }
+
+@mixin xs-heading {
+    font-size: $heading-xs;
+    font-weight: 600;
+    color: colors.$dark-grey;
+}
+
+@mixin regular {
+    font-size: 14px;
+    font-weight: normal;
+    color: colors.$grey;
+}

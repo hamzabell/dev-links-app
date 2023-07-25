@@ -2,74 +2,91 @@
     <div class="dashboard-container">
         <AppNavBar />
 
-        <div class="dashboard-container__customizer">
-            <div class="dashboard-container__header">
-                <h1 class="dashboard-container__title">Customize your links</h1>
-                <p class="dashboard-container__subtitle">
-                    Add/edit/remove links below and then share all your profiles with the world!
-                </p>
-
-                <AppButton class="dashboard-container__addlink" :button-type="'secondary'" @click="push(INIT_NEW_LINK)">+ Add New Link</AppButton>
-
-            </div>
-            <div class="dashboard-container__empty" v-if="values.links.length == 0">
-                <img class="dashboard-container__empty-icon" src="@/assets/empty.svg" alt="empty state icon">
-                <h1 class="dashboard-container__empty-title">Let’s get you started</h1>
-                <p class="dashboard-container__empty-message">Use the “Add new link” button to get started. Once you have more than one link, you can reorder and edit them. We’re here to help you share your profiles with everyone!</p>
+        <div class="dashboard-container__desktop-wrapper">
+            <div class="dashboard-container__desktop-previewer">
+                <DesktopPreviewer :links-list="linksForPreview" />
             </div>
 
-            <div class="dashboard-container__links" v-else>
-                <div class="dashboard-container__links-wrapper" v-for="(field, idx) in fields" :key="field.key">
-                    <div class="dashboard-container__link-header">
-                        <div class="dashboard-container__link-header-left">
-                            <svg class="dashboard-container__link-header-left-icon" width="12" height="6" viewBox="0 0 12 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect width="12" height="1" fill="#737373"/>
-                                <rect y="5" width="12" height="1" fill="#737373"/>
-                            </svg>
-
-                            <p class="dashboard-container__link-header-left-title">Link #{{ idx + 1 }}</p>
-                        </div>
-
-                        <a class="dashboard-container__link-header-right" @click="remove(idx)">Remove</a>
-                    </div>
-                    <div class="dashboard-container__link-form">
-                        <div class="dashboard-container__link-form-group">
-                            <label class="dashboard-container__link-form-label">Platform</label>
-                            <select v-model="field.value.platform" class="dashboard-container__link-form-input" >
-                                <option value="null">Please Select Platform </option>
-                                <option v-for="(platform, idx) in platforms" :key="idx" :value="platform.value">
-                                    {{ platform.name }}
-                                </option>
-                            </select>
-                        </div>
-                        <div class="dashboard-container__link-form-group">
-                            <label class="dashboard-container__link-form-label">Link</label>
-                            <input v-model="field.value.link" class="dashboard-container__link-form-input" type="text"  />
-                        </div>
-                    </div>
+            <div class="dashboard-container__customizer">
+                <div class="dashboard-container__header">
+                    <h1 class="dashboard-container__title">Customize your links</h1>
+                    <p class="dashboard-container__subtitle">
+                        Add/edit/remove links below and then share all your profiles with the world!
+                    </p>
+    
+                    <AppButton class="dashboard-container__addlink" :button-type="'secondary'" @click="push(INIT_NEW_LINK)">+ Add New Link</AppButton>
+    
                 </div>
-
+                <div class="dashboard-container__empty" v-if="values.links.length == 0">
+                    <img class="dashboard-container__empty-icon" src="@/assets/empty.svg" alt="empty state icon">
+                    <h1 class="dashboard-container__empty-title">Let’s get you started</h1>
+                    <p class="dashboard-container__empty-message">Use the “Add new link” button to get started. Once you have more than one link, you can reorder and edit them. We’re here to help you share your profiles with everyone!</p>
+                </div>
+    
+                <div class="dashboard-container__links" v-else>
+                    <div class="dashboard-container__links-wrapper" v-for="(field, idx) in fields" :key="field.key">
+                        <div class="dashboard-container__link-header">
+                            <div class="dashboard-container__link-header-left">
+                                <svg class="dashboard-container__link-header-left-icon" width="12" height="6" viewBox="0 0 12 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect width="12" height="1" fill="#737373"/>
+                                    <rect y="5" width="12" height="1" fill="#737373"/>
+                                </svg>
+    
+                                <p class="dashboard-container__link-header-left-title">Link #{{ idx + 1 }}</p>
+                            </div>
+    
+                            <a class="dashboard-container__link-header-right" @click="remove(idx)">Remove</a>
+                        </div>
+                        <div class="dashboard-container__link-form">
+                            <div class="dashboard-container__link-form-group">
+                                <label class="dashboard-container__link-form-label">Platform</label>
+                                <select v-model="field.value.platform" class="dashboard-container__link-form-input" >
+                                    <option value="null">Please Select Platform </option>
+                                    <option v-for="(platform, idx) in platforms" :key="idx" :value="platform.value">
+                                        {{ platform.name }}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="dashboard-container__link-form-group">
+                                <label class="dashboard-container__link-form-label">Link</label>
+                                <input v-model="field.value.link" class="dashboard-container__link-form-input" type="text"  />
+                            </div>
+                        </div>
+                    </div>
+    
+                </div>
+                <div class="dashboard-container__save-wrapper">
+                    <AppButton @click="onSubmit" class="dashboard-container__save" :disabled="values.links.length == 0">Save</AppButton>
+                </div>
             </div>
-            <div class="dashboard-container__save-wrapper">
-                <AppButton @click="onSubmit" class="dashboard-container__save" :disabled="values.links.length == 0">Save</AppButton>
-            </div>
-
         </div>
+
+
+
     </div>
 </template>
 
 <script setup>
     import AppNavBar from '@/components/AppNavBar.vue';
     import AppButton from '@/components/AppButton.vue';
-    import { reactive, toRaw, watch, onMounted } from 'vue';
+    import { reactive, toRaw, watch, onMounted, ref } from 'vue';
     import * as yup from 'yup';
     import { useForm, useFieldArray } from 'vee-validate';
     import useLinkStore from '@/store/useLinkStore';
+    import DesktopPreviewer from '@/components/DesktopPreviewer.vue';
 
     const links = useLinkStore();
+    const linksForPreview = ref([null, null, null, null, null])
+
 
     onMounted(() => {
-        resetForm({ values: {links: links.links}})
+        resetForm({ values: {links: links.links}});
+
+        links.links.forEach((link, idx) => {
+            if (idx < 5) {
+                linksForPreview.value[idx]= link;
+            }
+        })
     })
 
 
@@ -318,6 +335,9 @@
             }
         }
 
+        &__desktop-previewer {
+            display: none;
+        }
 
         @media screen and (min-width: partials.$tablet) {
             &__customizer { 
@@ -330,6 +350,33 @@
 
             &__save {
                 width: 9.1rem;
+            }
+        }
+
+
+        @media screen and (min-width: partials.$desktop) {
+
+            &__customizer { 
+                width: 80.8rem;
+            }
+
+            &__desktop {
+                &-wrapper {
+                    display: flex;
+                    column-gap: 2.4rem;
+                    justify-content: center;
+                }
+
+                &-previewer {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    background: partials.$white;
+                    width: 56rem;
+                    padding: 4rem;
+                    margin: 1.6rem 1.6rem;
+                    border-radius: 12px;
+                }
             }
         }
         
