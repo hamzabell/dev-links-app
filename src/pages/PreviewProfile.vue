@@ -139,7 +139,7 @@
                 display: flex;
                 justify-content: space-between;
                 background: partials.$white;
-                width: 72rem;
+                width: 80%;
                 margin-top: 2.4rem;
                 border-radius: 12px;
 
