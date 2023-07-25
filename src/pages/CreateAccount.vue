@@ -169,7 +169,24 @@
                     margin: 0;
                     margin-top: .5rem;
                     color: pp.$purple;
+                    cursor: pointer;
                 }
+            }
+        }
+
+        @media screen and (min-width: pp.$tablet) {
+            background: pp.$grey-light;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+
+            &-form {
+                background: white;
+                padding: 4rem;
+                min-width: 47.6rem;
             }
         }
 
