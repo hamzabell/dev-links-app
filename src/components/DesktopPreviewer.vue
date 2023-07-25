@@ -25,10 +25,15 @@
 
             <div class="mobile-preview__links">
                 <div class="mobile-preview__link-wrapper" v-for="(link, idx) in linksList" :key="idx">
-                    <PreviewButton class="mobile-preview__link-button" v-if="link" :button-type="link.platform" :link="link.link"/>
-                    <svg v-else width="237" height="44" viewBox="0 0 237 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg v-if="link === null" width="237" height="44" viewBox="0 0 237 44" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <rect width="237" height="44" rx="8" fill="#EEEEEE"/>
                     </svg>
+                    <div v-else>
+                        {{  console.log(link) }}
+                        <PreviewButton v-if="link.link !== '' " class="mobile-preview__link-button"  :button-type="link.platform" :link="link.link"/>
+
+                    </div>
+
 
 
                 </div>

@@ -81,9 +81,6 @@
         }
     }
 
-    console.log(props.buttonType)
-
-    console.log(button_states[props.buttonType])
 
     const bgColor = ref(button_states[props.buttonType].color);
     const name = ref(button_states[props.buttonType].name);

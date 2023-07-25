@@ -69,7 +69,7 @@
 <script setup>
     import AppNavBar from '@/components/AppNavBar.vue';
     import AppButton from '@/components/AppButton.vue';
-    import { reactive, toRaw, watch, onMounted, ref } from 'vue';
+    import { reactive, toRaw, watch, onMounted, ref, onUpdated } from 'vue';
     import * as yup from 'yup';
     import { useForm, useFieldArray } from 'vee-validate';
     import useLinkStore from '@/store/useLinkStore';
@@ -85,6 +85,14 @@
         links.links.forEach((link, idx) => {
             if (idx < 5) {
                 linksForPreview.value[idx]= link;
+            }
+        })
+    })
+
+    onUpdated(() => {
+        links.links.forEach((link, idx) => {
+            if (idx < 5) {
+                linksForPreview.value[idx]= link
             }
         })
     })

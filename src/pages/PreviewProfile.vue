@@ -18,7 +18,10 @@
             </div>
     
             <div class="preview__user-links">
-                 <PreviewButton v-for="link in newLinks" :key="link.id" :button-type="link.platform" :link="link.link"/>
+
+                <div v-for="link in newLinks" :key="link.id">
+                    <PreviewButton  v-if="link.link !== '' " :button-type="link.platform" :link="link.link"/>
+                </div>
             </div>
         </div>
 
