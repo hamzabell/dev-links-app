@@ -2,7 +2,7 @@
     <div class="preview">
         <div class="preview__action-wrapper">
             <AppButton class="preview__button" :button-type="'secondary'" @click="$router.go(-1)">Back to Editor</AppButton>
-            <AppButton class="preview__button">Share Link</AppButton>
+            <AppButton class="preview__button" @click="copyShareLink">Share Link</AppButton>
         </div>
 
         <div class="preview__user-links-wrapper">
@@ -37,6 +37,7 @@
     import useUserStore from '@/store/useAuthStore';
     import { onMounted, ref } from 'vue';
     import placeholder from '@/assets/placeholder';
+    import { useErrorToast, useInfoToast } from '@/services/toast.service';
 
     const links = useLinkStore();
     const auth = useUserStore();
@@ -50,6 +51,13 @@
         userImage.value = auth.user.profileImage ?? placeholder;
         newLinks.value = links.links;
     })
+
+
+    const copyShareLink = () => {
+        navigator.clipboard.writeText(`${window.location.href}`)
+            .then(() => useInfoToast("Profile link copied successfully🚀"))
+            .catch(() => useErrorToast("An Error Occured! Please try again"))
+    }
 </script>
 
 <style lang="scss">

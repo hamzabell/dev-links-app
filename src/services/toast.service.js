@@ -11,3 +11,7 @@ export function useSuccessToast(message){
 export function useErrorToast(message) {
     toast.error(message, { position: 'bottom' })
 }
+
+export function useInfoToast(message) {
+    toast.default(message, { position: 'bottom' })
+}
